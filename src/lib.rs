@@ -23,10 +23,7 @@ pub struct Estadistica {
 
 impl Estadistica {
     pub fn promedio(&self) -> f64 {
-        if self.conteo == 0 {
-            return 0.0;
-        }
-        self.suma as f64 / self.conteo as f64
+        todo!("Paso 4: suma / conteo, sin truncar")
     }
 }
 
@@ -48,59 +45,22 @@ pub enum ErrorResumen {
 
 /// Interpreta el texto de un CSV de partidas.
 pub fn leer_texto(texto: &str) -> Result<Vec<Partida>, ErrorResumen> {
-    let mut lector = csv::Reader::from_reader(texto.as_bytes());
-    let mut partidas = Vec::new();
-    for fila in lector.deserialize() {
-        let partida: Partida = fila?;
-        partidas.push(partida);
-    }
-    if partidas.is_empty() {
-        return Err(ErrorResumen::SinPartidas);
-    }
-    Ok(partidas)
+    todo!("Paso 3: lee las filas con csv::Reader y deserialize")
 }
 
 /// Lee un archivo CSV de partidas.
 pub fn leer_archivo(ruta: &str) -> Result<Vec<Partida>, ErrorResumen> {
-    let texto = std::fs::read_to_string(ruta).map_err(|causa| ErrorResumen::Lectura {
-        ruta: ruta.to_string(),
-        causa,
-    })?;
-    leer_texto(&texto)
+    todo!("Paso 3: lee el archivo y pásalo a leer_texto")
 }
 
 /// Agrupa por modo. BTreeMap deja los modos en orden alfabético, así la salida no cambia entre corridas.
 pub fn resumir(partidas: &[Partida]) -> BTreeMap<String, Estadistica> {
-    let mut resumen: BTreeMap<String, Estadistica> = BTreeMap::new();
-    for p in partidas {
-        let e = resumen.entry(p.modo.clone()).or_default();
-        e.conteo += 1;
-        e.suma += u64::from(p.puntos);
-    }
-    resumen
+    todo!("Paso 4: agrupa por modo en un BTreeMap")
 }
 
 /// La tabla que imprime la CLI.
 pub fn formatear(resumen: &BTreeMap<String, Estadistica>) -> String {
-    let mut salida = String::new();
-    writeln!(
-        salida,
-        "{:<14} {:>8} {:>9} {:>10}",
-        "modo", "partidas", "puntos", "promedio"
-    )
-    .unwrap();
-    for (modo, e) in resumen {
-        writeln!(
-            salida,
-            "{:<14} {:>8} {:>9} {:>10.1}",
-            modo,
-            e.conteo,
-            e.suma,
-            e.promedio()
-        )
-        .unwrap();
-    }
-    salida
+    todo!("Paso 5: arma la tabla")
 }
 
 #[cfg(test)]
